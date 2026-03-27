@@ -15,7 +15,8 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 def karyo_gainloss(res, outdir, title=None, annot_dt=None,
                    state_type='categorical', n_states=5, 
-                   linkage_method='ward', dist_metric='euclidean'):
+                   linkage_method='ward', dist_metric='euclidean',
+                   plot_width = 22, plot_height=8):
     """
     Function to plot karyogram with support for categorical, integer or continuous CN states
 
@@ -31,6 +32,8 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     n_states: Number of categorical states (3 or 5). Only used when state_type='categorical'
     linkage_method: Linkage method for hierarchical clustering. Default: 'ward'
     dist_metric: Distance metric for clustering. Default: 'euclidean'
+    plot_width: Plot width as input for plt.figure()
+    plot_height: Plot height as input for plt.figure()
 
     Returns
     -------
@@ -81,7 +84,7 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     # ----------------------------
     # Figure & GridSpec
     # ----------------------------
-    fig = plt.figure(figsize=(22, 8))
+    fig = plt.figure(figsize=(plot_width, plot_height))
 
     if annot_dt is None:
         gs = gridspec.GridSpec(
