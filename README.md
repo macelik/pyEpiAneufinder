@@ -68,7 +68,7 @@ pea.epiAneufinder(fragment_file = "sample_data/sample.tsv.gz",
 
 Test data for running epiAneufinder can be found on github in the directory [sample_data](sample_data).
 
-The main output is saved in the file `result_table.csv`, which contains the CNV status per cell and bin encoded with 0=loss, 1=base and 2=gains. More information included intermediate results are saved in `count_matrix.h5ad`. The karyogram is additionally visualized in `Karyogram.png`. For the provided test data it looks like this:
+The main output is saved in `results_sample_data/outs/result_table.tsv.gz`, which contains the CNV status per cell and bin encoded with 0=loss, 1=base and 2=gains. More information included intermediate results are saved in `count_matrix.h5ad`. The karyogram is additionally visualized in `results_sample_data/outs/Karyogram.png`. For the provided test data it looks like this:
 
 ![Karyogram test data](sample_data/Karyogram.png)
 
@@ -81,7 +81,7 @@ into a user-defined number of cluster `num_clust`.
 import pyEpiAneufinder as pea
 import pandas as pd
 
-res = pd.read_csv("results_sample_data/result_table.csv",index_col=0)
+res = pd.read_csv("results_sample_data/outs/result_table.tsv.gz", sep="\t", index_col=0)
 clones = pea.split_subclones(res,num_clust=4)
 
 ```
@@ -121,7 +121,7 @@ Both metrics are implemented genome-wide and per chromosome:
 import pyEpiAneufinder as pea
 import pandas as pd
 
-res = pd.read_csv("results_sample_data/result_table.csv",index_col=0)
+res = pd.read_csv("results_sample_data/outs/result_table.tsv.gz", sep="\t", index_col=0)
 
 #Get the scores across the complete dataset
 pea.compute_aneuploidy_across_sample(res)
@@ -161,7 +161,7 @@ Based on the same formular, the aneuploidy per cell, also called CNV burden, can
 import pyEpiAneufinder as pea
 import pandas as pd
 
-res = pd.read_csv("results_sample_data/result_table.csv",index_col=0)
+res = pd.read_csv("results_sample_data/outs/result_table.tsv.gz", sep="\t", index_col=0)
 cnv_burden = pea.compute_cnv_burden_cell(res)
 
 ```

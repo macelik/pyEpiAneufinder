@@ -474,19 +474,19 @@ def epiAneufinder(fragment_file, outdir, genome_file,
         somies_ad.to_csv(results_file, sep="\t", index=True, compression="gzip")
 
         print(
-            "Saved integer CNV states to integer_states.csv (0-6).\n"
+            "Saved integer CNV states to integer_states.tsv.gz (0-6).\n"
             "Holmes mapping: {0,1} --> loss (0), {2} --> base (1), {3,4,5,6} --> gain (2).\n"
-            "Mapped results are stored in result_table_holmes.csv."
+            "Mapped results are stored in result_table_holmes.tsv.gz."
         )
 
         print(
-            "Saved continuous CNV scores to continuous_scores.csv (0-6).\n"
+            "Saved continuous CNV scores to continuous_scores.tsv.gz (0-6).\n"
             "Watson mapping: <=1 --> loss (0), >1 and <3 --> base (1), >=3 --> gain (2).\n"
-            "Mapped results are stored in result_table_watson.csv."
+            "Mapped results are stored in result_table_watson.tsv.gz."
         )
 
         print(
-            "Saved consensus CNV calls to result_table.csv\n"
+            "Saved consensus CNV calls to result_table.tsv.gz\n"
             "(0=loss, 0.5=weak loss, 1=baseline, 1.5=weak gain, 2=gain),\n"
             "combining Holmes and Watson."
 )
