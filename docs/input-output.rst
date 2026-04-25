@@ -12,8 +12,10 @@ Inputs
 Outputs
 -------
 
-- ``outdir/outs/result_table.tsv.gz`` with CNV state per cell and bin
-- ``count_matrix.h5ad`` with intermediate matrix outputs
+- ``outdir/outs/result_table.tsv.gz`` with the consensus Holmes+Watson CNV table
+- ``outdir/count_matrix.h5ad`` with the filtered count matrix used for inference
+- ``outdir/parameter_configuration.txt`` with the run configuration
+- ``outdir/clusters.json`` with the inferred segment clusters per cell
 - ``outdir/outs/Karyogram.png`` when plotting is enabled
 - ``outdir/outs/integer_states.tsv.gz`` with integer CNV states
 - ``outdir/outs/continuous_scores.tsv.gz`` with continuous CNV scores
