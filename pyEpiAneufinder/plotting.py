@@ -23,8 +23,8 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     Parameters
     ----------
     res : pandas.DataFrame
-        Result table with ``seq``, ``start``, and ``end`` as the first three
-        columns, followed by one copy-number state column per cell.
+        Result table containing ``seq``, ``start``, and ``end`` columns,
+        followed by one copy-number state column per cell.
         The function mutates ``res["seq"]`` in place by converting it to an
         ordered categorical for plotting.
     outdir : str
