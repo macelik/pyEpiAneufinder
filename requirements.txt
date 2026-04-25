@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+scipy
+anndata
+natsort
+biopython
+scikit-misc
+tqdm

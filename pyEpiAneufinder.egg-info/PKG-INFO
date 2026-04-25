@@ -3,7 +3,7 @@ Name: pyEpiAneufinder
 Version: 0.3.5
 Summary: Identify copy number variations from single-cell ATAC-seq data
 Author-email: Katharina Schmid <katharina.schmid@bmc.med.lmu.de>, Aikaterini Symeonidi <asymeonidi@bmc.med.lmu.de>, Angelos Nikolaou <anguelos.nicolaou@gmail.com>, Ida Büschel <Ida.Bueschel@helmholtz-munich.de>, Maria Colomé-Tatché <maria.colome@bmc.med.lmu.de>
-License: BSD-3-Clause
+License-Expression: GPL-3.0-only
 Project-URL: Homepage, https://github.com/colomemaria/pyEpiAneufinder
 Project-URL: Repository, https://github.com/colomemaria/pyEpiAneufinder
 Project-URL: Documentation, https://pyepianeufinder.readthedocs.io/
@@ -15,6 +15,7 @@ Classifier: Programming Language :: Python :: 3.11
 Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: matplotlib
@@ -31,6 +32,7 @@ Provides-Extra: docs
 Requires-Dist: sphinx>=7; extra == "docs"
 Requires-Dist: furo>=2024.0.0; extra == "docs"
 Requires-Dist: myst-parser>=2; extra == "docs"
+Dynamic: license-file
 
 # pyEpiAneufinder: Identifying copy number alterations from single-cell ATAC-seq data
 

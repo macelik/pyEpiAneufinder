@@ -1,0 +1,9 @@
+-r requirements.txt
+
+build
+setuptools>=68
+wheel
+pytest>=8
+sphinx>=7
+furo>=2024.0.0
+myst-parser>=2
