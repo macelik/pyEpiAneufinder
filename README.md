@@ -82,7 +82,7 @@ import pyEpiAneufinder as pea
 import pandas as pd
 
 res = pd.read_csv("results_sample_data/outs/result_table.tsv.gz", sep="\t", index_col=0)
-clones = pea.split_subclones(res,num_clust=4)
+clones = pea.split_subclones(res, split_val=4)
 
 ```
 These subclones can be visualized as an annotation bar in the karygram using `karyo_gainloss()` with `annot_dt`. In general, this can be applied on categorical annotations such as cell types. It requires the annotation parameter as a pandas DataFrame with barcodes as indices (matching the column names of the results) and a column called `annot` with categorical values.
@@ -134,6 +134,9 @@ aneu_chrom = pea.compute_aneuploidy_by_chr(res)
 heterogen_chrom = pea.compute_heterogeneity_by_chr(res)
 
 #Create a scatterplot for this data
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 plot_data = pd.DataFrame({"chrom": aneu_chrom.columns.values,
                          "aneu": aneu_chrom.iloc[0],
                          "heterogen": heterogen_chrom.iloc[0]})

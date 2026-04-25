@@ -17,8 +17,8 @@ def split_subclones(res, split_val, criterion="maxclust",
     Parameters
     ----------
     res : pandas.DataFrame
-        Result table from :func:`pyEpiAneufinder.epiAneufinder` with genomic
-        coordinates in the first three columns and one CNV profile column per cell.
+        Result table from :func:`pyEpiAneufinder.epiAneufinder` containing
+        ``seq``, ``start``, and ``end`` columns plus one CNV profile column per cell.
     split_val : int | float
         Threshold used to cut the clustering tree. With
         ``criterion="maxclust"``, this is the requested number of subclones.

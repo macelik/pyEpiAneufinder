@@ -8,7 +8,7 @@ version = "0.3.5"
 description = "Identify copy number variations from single-cell ATAC-seq data"
 readme = "README.md"
 requires-python = ">=3.10"
-license = "BSD-3-Clause"
+license = { text = "BSD-3-Clause" }
 
 authors = [
   { name = "Katharina Schmid", email = "katharina.schmid@bmc.med.lmu.de" },

@@ -23,8 +23,7 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     Parameters
     ----------
     res : pandas.DataFrame
-        Result table with ``seq``, ``start``, and ``end`` as the first three
-        columns,
+        Result table containing ``seq``, ``start``, and ``end`` columns
         followed by one copy-number state column per cell.
         The function mutates ``res["seq"]`` in place by converting it to an
         ordered categorical for plotting.
@@ -35,7 +34,7 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     annot_dt : pandas.DataFrame | None, optional
         Optional annotation table indexed by barcode and containing an ``annot``
         column used to draw a side annotation bar. When provided, ``annot_dt["annot"]``
-        is converted to categorical in place if needed.
+        is coerced to categorical if needed for plotting.
     state_type : {"categorical", "integer", "continuous"}, optional
         Interpretation of the copy-number values in ``res``.
     n_states : int, optional
@@ -124,9 +123,9 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
                         link_color_func=lambda k: 'darkgrey', ax=ax)
     ax.axis('off')
 
-    leaf_order = dendro['leaves']
-    leaf_order = [l + 3 for l in leaf_order[::-1]]
-    res = res.iloc[:, [0, 1, 2] + leaf_order]
+    leaf_order = dendro['leaves'][::-1]
+    cell_cols = data_matrix.columns[leaf_order]
+    res = res[["seq", "start", "end"] + list(cell_cols)]
 
     if annot_dt is not None:
         barcodes_order = data_matrix.columns[dendro['leaves'][::-1]]
