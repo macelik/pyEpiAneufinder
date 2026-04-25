@@ -1,20 +1,21 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyEpiAneufinder"
 version = "0.3.5"
-description = "Python version of epiAneufinder for calling CNVs from scATACseq"
+description = "Identify copy number variations from single-cell ATAC-seq data"
+readme = "README.md"
 requires-python = ">=3.10"
-license = "BSD-3-clause"
+license = { text = "BSD-3-Clause" }
 
 authors = [
-  {name = "Katharina Schmid", email = "katharina.schmid@bmc.med.lmu.de"},
-  {name = "Aikaterini Symeonidi", email = "asymeonidi@bmc.med.lmu.de"},
-  {name = "Angelos Nikolaou", email = "anguelos.nicolaou@gmail.com"},
-  {name = "Ida Büschel", email = "Ida.Bueschel@helmholtz-munich.de"},
-  {name = "Maria Colomé-Tatché", email = "maria.colome@bmc.med.lmu.de"}
+  { name = "Katharina Schmid", email = "katharina.schmid@bmc.med.lmu.de" },
+  { name = "Aikaterini Symeonidi", email = "asymeonidi@bmc.med.lmu.de" },
+  { name = "Angelos Nikolaou", email = "anguelos.nicolaou@gmail.com" },
+  { name = "Ida Büschel", email = "Ida.Bueschel@helmholtz-munich.de" },
+  { name = "Maria Colomé-Tatché", email = "maria.colome@bmc.med.lmu.de" }
 ]
 
 dependencies = [
@@ -27,10 +28,34 @@ dependencies = [
   "natsort",
   "biopython",
   "scikit-misc",
-  "tqdm",
-  "pytest"
+  "tqdm"
 ]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8",
+]
+docs = [
+  "sphinx>=7",
+  "furo>=2024.0.0",
+  "myst-parser>=2",
+]
+
+[project.urls]
+Homepage = "https://github.com/colomemaria/pyEpiAneufinder"
+Repository = "https://github.com/colomemaria/pyEpiAneufinder"
+Documentation = "https://pyepianeufinder.readthedocs.io/"
 
 [tool.setuptools]
 packages = ["pyEpiAneufinder"]
-
+include-package-data = true
