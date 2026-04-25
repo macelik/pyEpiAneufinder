@@ -15,6 +15,8 @@ Outputs
 - ``outdir/outs/result_table.tsv.gz`` with the consensus Holmes+Watson CNV table
 - ``outdir/count_matrix.h5ad`` with the filtered count matrix used for inference
 - ``outdir/parameter_configuration.txt`` with the run configuration
+- ``outdir/binned_genome.csv`` with the genome bins and GC annotations
+- ``outdir/breakpoints.csv`` with the detected breakpoints per cell
 - ``outdir/clusters.json`` with the inferred segment clusters per cell
 - ``outdir/outs/Karyogram.png`` when plotting is enabled
 - ``outdir/outs/integer_states.tsv.gz`` with integer CNV states
