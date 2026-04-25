@@ -25,6 +25,7 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
     res : pandas.DataFrame
         Result table with ``seq``, ``start``, and ``end`` as the first three
         columns, followed by one copy-number state column per cell.
+        The function reorders ``res["seq"]`` categorically for plotting.
     outdir : str
         Output path where the PNG figure will be written.
     title : str | None, optional
