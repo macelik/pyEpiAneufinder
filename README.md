@@ -12,7 +12,7 @@ The R version (including more information) can be found here: https://github.com
 
 ## Public API
 
-The first supported public API includes:
+The supported public API for the first release is exactly:
 
 - `epiAneufinder`
 - `split_subclones`
@@ -95,7 +95,7 @@ annot_dt["annot"] = pd.Categorical("clone" + annot_dt.subclone.astype(str))
 
 pea.karyo_gainloss(
     res,
-    outdir="results_sample_data/",
+    outdir="results_sample_data/karyo_annot.png",
     title="Karyogram with annotation",
     annot_dt=annot_dt
 )
