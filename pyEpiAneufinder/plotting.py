@@ -33,7 +33,8 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
         Figure title.
     annot_dt : pandas.DataFrame | None, optional
         Optional annotation table indexed by barcode and containing an ``annot``
-        column used to draw a side annotation bar.
+        column used to draw a side annotation bar. When provided, ``annot_dt["annot"]``
+        is converted to categorical in place if needed.
     state_type : {"categorical", "integer", "continuous"}, optional
         Interpretation of the copy-number values in ``res``.
     n_states : int, optional

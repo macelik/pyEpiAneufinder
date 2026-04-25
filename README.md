@@ -12,7 +12,7 @@ The R version (including more information) can be found here: https://github.com
 
 ## Public API
 
-The supported public API for the first release is exactly:
+The first release documents these primary public entry points:
 
 - `epiAneufinder`
 - `split_subclones`

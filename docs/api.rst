@@ -1,6 +1,8 @@
 API Reference
 =============
 
+The first release documents these primary public entry points.
+
 .. autofunction:: pyEpiAneufinder.epiAneufinder
 
 .. autofunction:: pyEpiAneufinder.split_subclones
