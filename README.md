@@ -10,12 +10,30 @@ Ramakrishnan, A., Symeonidi, A., Hanel, P. et al. epiAneufinder identifies copy 
 
 The R version (including more information) can be found here: https://github.com/colomemaria/epiAneufinder
 
+## Public API
+
+The first supported public API includes:
+
+- `epiAneufinder`
+- `split_subclones`
+- `karyo_gainloss`
+- `plot_single_cell_profile`
+- `compute_aneuploidy_across_sample`
+- `compute_aneuploidy_by_chr`
+- `compute_heterogeneity_across_sample`
+- `compute_heterogeneity_by_chr`
+- `compute_cnv_burden_cell`
+
 ### Installation
 
-Potentially setup a new conda environment first (recommended). Then:
-
+```bash
+pip install pyEpiAneufinder
 ```
-pip install git+https://github.com/colomemaria/pyEpiAneufinder
+
+For development, including tests:
+
+```bash
+pip install -e ".[test]"
 ```
 
 ### Executing the program
@@ -67,7 +85,7 @@ res = pd.read_csv("results_sample_data/result_table.csv",index_col=0)
 clones = pea.split_subclones(res,num_clust=4)
 
 ```
-These subclones can be visualized as an annotation bar in the karygram using the function `plot_karyo_annotated()`. In general, this function can be applied on all kind of categorical annotations, such as cell types. It requires the annotation parameter as a pandas DataFrame with barcodes as indices (matching the column names of the results) and a column called `annot` with categorical values.
+These subclones can be visualized as an annotation bar in the karygram using `karyo_gainloss()` with `annot_dt`. In general, this can be applied on categorical annotations such as cell types. It requires the annotation parameter as a pandas DataFrame with barcodes as indices (matching the column names of the results) and a column called `annot` with categorical values.
 
 ```
 #Reformat to fullfill input requirements for plotting
@@ -75,8 +93,12 @@ annot_dt = clones.copy()
 annot_dt.index = annot_dt.barcode
 annot_dt["annot"] = pd.Categorical("clone" + annot_dt.subclone.astype(str))
 
-pea.plot_karyo_annotated(res,"karyo_annot.png",
-                         annot_dt=annot_dt, title_karyo= "Karyogramm with annotation")
+pea.karyo_gainloss(
+    res,
+    outdir="results_sample_data/",
+    title="Karyogram with annotation",
+    annot_dt=annot_dt
+)
 ```
 
 ![Karyogram with annotation](sample_data/karyo_annot.png)
