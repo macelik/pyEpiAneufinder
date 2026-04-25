@@ -68,7 +68,7 @@ pea.epiAneufinder(fragment_file = "sample_data/sample.tsv.gz",
 
 Test data for running epiAneufinder can be found on github in the directory [sample_data](sample_data).
 
-The main output is saved in `results_sample_data/outs/result_table.tsv.gz`, which contains the CNV status per cell and bin encoded with 0=loss, 1=base and 2=gains. More information included intermediate results are saved in `count_matrix.h5ad`. The karyogram is additionally visualized in `results_sample_data/outs/Karyogram.png`. For the provided test data it looks like this:
+The main output is saved in `results_sample_data/outs/result_table.tsv.gz`, which contains the consensus CNV status per cell and bin encoded with 0=loss, 0.5=weak loss, 1=base, 1.5=weak gain, and 2=gain. More information included intermediate results are saved in `count_matrix.h5ad`. The karyogram is additionally visualized in `results_sample_data/outs/Karyogram.png`. For the provided test data it looks like this:
 
 ![Karyogram test data](sample_data/Karyogram.png)
 
