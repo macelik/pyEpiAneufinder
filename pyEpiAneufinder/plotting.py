@@ -18,27 +18,38 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
                    linkage_method='ward', dist_metric='euclidean',
                    plot_width = 22, plot_height=8):
     """
-    Function to plot karyogram with support for categorical, integer or continuous CN states
+    Plot a CNV karyogram from a pyEpiAneufinder result table.
 
     Parameters
     ----------
-    res: Pandas DataFrame with position information in first three columns (seq, start, end), 
-         followed by the CN status of each cell
-    outdir: Path to saved .png image
-    title: Plot title
-    annot_dt: Optional Pandas DataFrame with annotation information for each cell. 
-        Index must match cell barcodes in res. Must contain column 'annot' with categorical annotations.
-    state_type: Type of states to plot. Options: 'categorical', 'integer', 'continuous'
-    n_states: Number of categorical states (3 or 5). Only used when state_type='categorical'
-    linkage_method: Linkage method for hierarchical clustering. Default: 'ward'
-    dist_metric: Distance metric for clustering. Default: 'euclidean'
-    plot_width: Plot width as input for plt.figure()
-    plot_height: Plot height as input for plt.figure()
+    res : pandas.DataFrame
+        Result table with ``seq``, ``start``, and ``end`` as the first three
+        columns, followed by one copy-number state column per cell.
+    outdir : str
+        Output path where the PNG figure will be written.
+    title : str | None, optional
+        Figure title.
+    annot_dt : pandas.DataFrame | None, optional
+        Optional annotation table indexed by barcode and containing an ``annot``
+        column used to draw a side annotation bar.
+    state_type : {"categorical", "integer", "continuous"}, optional
+        Interpretation of the copy-number values in ``res``.
+    n_states : int, optional
+        Number of categorical states to display when ``state_type="categorical"``.
+        Supported values are ``3`` and ``5``.
+    linkage_method : str, optional
+        Hierarchical clustering linkage method used to order cells.
+    dist_metric : str, optional
+        Pairwise distance metric used for clustering cell profiles.
+    plot_width : float, optional
+        Figure width in inches.
+    plot_height : float, optional
+        Figure height in inches.
 
     Returns
     -------
-    A filtered version of the input Pandas DataFrame
-
+    None
+        The function saves the karyogram image to ``outdir``.
     """
 
     # ----------------------------
@@ -237,18 +248,24 @@ def karyo_gainloss(res, outdir, title=None, annot_dt=None,
 
 def plot_single_cell_profile(outdir, cell_name, plot_path, mode=None):
     """
-    Function to visualize the count distribution (GC corrected) per somy for one selected cell
+    Plot GC-corrected count distributions and genome-wide states for one cell.
 
     Parameters
     ----------
-    outdir: Directory containing results from pyEpiAneufinder's main function
-    cell_name: Barcode of selected cell
-    plot_path: Path to saved .png plot
-    mode: Choose from "holmes" or "watson". If mode=None, use 5-state combined output.
+    outdir : str
+        Output directory produced by :func:`pyEpiAneufinder.epiAneufinder`.
+    cell_name : str
+        Barcode of the cell to visualize.
+    plot_path : str
+        Output path where the PNG figure will be written.
+    mode : {"holmes", "watson"} | None, optional
+        Select a mode-specific result table. If ``None``, use the combined
+        five-state ``result_table.tsv.gz`` output.
 
     Returns
-    ------
-    Collection of distribution plots
+    -------
+    None
+        The function saves the figure to ``plot_path``.
     """
 
     # Read both result table and count matrix

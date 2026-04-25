@@ -4,17 +4,20 @@ from natsort import natsorted
 
 def compute_cnv_burden_cell(df,offset=3):
     """
-    Function to compute the CNV burden (=aneuploidy score) per cell
+    Compute the fraction of altered bins for each cell.
 
     Parameters
     ----------
-    df: Results from pyEpiAneufinder main function (as pandas data frame)
-    offset: Number of columns to skip at the beginning (default the three annotation columns)
+    df : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder`.
+    offset : int, optional
+        Number of leading metadata columns to skip before the per-cell CNV matrix.
 
-    Output
+    Returns
     ------
-    Pandas data frame with two columns of barcodes and cnv_burden
-    
+    pandas.DataFrame
+        Data frame with ``barcodes`` and ``cnv_burden`` columns, where
+        ``cnv_burden`` is the fraction of bins whose state differs from 1.
     """
     cn_matrix = df.iloc[:, offset:].to_numpy()
     cnv_burden = pd.DataFrame({"barcodes": df.columns.values[offset:],
@@ -23,34 +26,39 @@ def compute_cnv_burden_cell(df,offset=3):
 
 def compute_aneuploidy_across_sample(df, offset=3):
     """
-    Function to compute one aneuploidy score for the complete dataset
+    Compute the mean fraction of altered bins across the full sample.
 
     Parameters
     ----------
-    df: Results from pyEpiAneufinder main function (as pandas data frame)
-    offset: Number of columns to skip at the beginning (default the three annotation columns)
+    df : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder`.
+    offset : int, optional
+        Number of leading metadata columns to skip before the per-cell CNV matrix.
 
-    Output
+    Returns
     ------
-    Aneuploidy score (one numeric value)
-    
+    float
+        Sample-level aneuploidy score computed as the fraction of entries not
+        equal to 1.
     """
     cn_matrix = df.iloc[:, offset:].to_numpy()
     return np.mean(cn_matrix != 1)
 
 def compute_aneuploidy_by_chr(df, offset=3):
     """
-    Function to compute one aneuploidy score per chromosome
+    Compute an aneuploidy score for each chromosome.
 
     Parameters
     ----------
-    df: Results from pyEpiAneufinder main function (as pandas data frame)
-    offset: Number of columns to skip at the beginning (default the three annotation columns)
+    df : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder`.
+    offset : int, optional
+        Number of leading metadata columns to skip before the per-cell CNV matrix.
 
-    Output
+    Returns
     ------
-    Pandas DataFrame with one aneuploidy score per chromosome
-    
+    pandas.DataFrame
+        Single-row data frame with one column per chromosome.
     """
     cn_matrix = df.iloc[:, offset:].to_numpy()
     chroms = df['seq'].values
@@ -76,17 +84,19 @@ def compute_heterogeneity_array(arr):
 
 def compute_heterogeneity_across_sample(df, offset=3):
     """
-    Function to compute one heterogeneity score for the complete dataset
+    Compute the mean per-bin heterogeneity score across the full sample.
 
     Parameters
     ----------
-    df: Results from pyEpiAneufinder main function (as pandas data frame)
-    offset: Number of columns to skip at the beginning (default the three annotation columns)
+    df : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder`.
+    offset : int, optional
+        Number of leading metadata columns to skip before the per-cell CNV matrix.
 
-    Output
+    Returns
     ------
-    Heterogeneity score (one numeric value)
-    
+    float
+        Mean heterogeneity score across all genomic bins.
     """
     cn_matrix = df.iloc[:, offset:].to_numpy()
     heterogeneity = compute_heterogeneity_array(cn_matrix)
@@ -94,17 +104,19 @@ def compute_heterogeneity_across_sample(df, offset=3):
 
 def compute_heterogeneity_by_chr(df, offset=3):
     """
-    Function to compute one heterogeneity score per chromosome
+    Compute a heterogeneity score for each chromosome.
 
     Parameters
     ----------
-    df: Results from pyEpiAneufinder main function (as pandas data frame)
-    offset: Number of columns to skip at the beginning (default the three annotation columns)
+    df : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder`.
+    offset : int, optional
+        Number of leading metadata columns to skip before the per-cell CNV matrix.
 
-    Output
+    Returns
     ------
-    Pandas DataFrame with one heterogeneity score per chromosome
-    
+    pandas.DataFrame
+        Single-row data frame with one column per chromosome.
     """
     cn_matrix = df.iloc[:, offset:].to_numpy()
     chroms = df['seq'].values
@@ -118,5 +130,4 @@ def compute_heterogeneity_by_chr(df, offset=3):
 
     df_result = pd.DataFrame(result, index=[0])  # index is just zero
     return df_result
-
 
