@@ -13,20 +13,6 @@ Ramakrishnan, A., Symeonidi, A., Hanel, P. et al. epiAneufinder identifies copy 
 
 The R version (including more information) can be found here: https://github.com/colomemaria/epiAneufinder
 
-## Public API
-
-The first release documents these primary public entry points:
-
-- `epiAneufinder`
-- `split_subclones`
-- `karyo_gainloss`
-- `plot_single_cell_profile`
-- `compute_aneuploidy_across_sample`
-- `compute_aneuploidy_by_chr`
-- `compute_heterogeneity_across_sample`
-- `compute_heterogeneity_by_chr`
-- `compute_cnv_burden_cell`
-
 ### Installation
 
 ```bash
