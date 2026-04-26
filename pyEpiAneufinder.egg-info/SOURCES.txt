@@ -6,7 +6,6 @@ docs/conf.py
 docs/index.rst
 docs/input-output.rst
 docs/installation.rst
-docs/quickstart.rst
 docs/revision-log.rst
 docs/_static/.gitkeep
 pyEpiAneufinder/.gitignore
