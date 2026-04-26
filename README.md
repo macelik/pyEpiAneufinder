@@ -75,5 +75,7 @@ Maria Colome-Tatche (maria.colome@bmc.med.lmu.de)
 
 ### Version history
 
+* 0.3.6
+    * Test release for GitHub Release and PyPI publishing workflows
 * 0.1
     * Initial Release (based on epiAneufinder v1.1.3)
