@@ -8,7 +8,7 @@ Python tools for identifying copy number variations from single-cell ATAC-seq da
    :caption: Contents
 
    installation
-   quickstart
+   quickstart/index
    input-output
    api
    revision-log
