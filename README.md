@@ -1,5 +1,7 @@
 # pyEpiAneufinder: Identifying copy number alterations from single-cell ATAC-seq data
 
+[![PyPI](https://img.shields.io/pypi/v/pyEpiAneufinder)](https://pypi.org/project/pyEpiAneufinder/)
+[![GitHub release](https://img.shields.io/github/v/release/macelik/pyEpiAneufinder)](https://github.com/macelik/pyEpiAneufinder/releases)
 [![Tests](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml)
 [![Docs CI](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml)
 [![Read the Docs](https://img.shields.io/badge/Read%20the%20Docs-online-brightgreen)](https://pyepianeufinder.readthedocs.io/)
