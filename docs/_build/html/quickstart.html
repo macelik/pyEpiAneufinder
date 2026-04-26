@@ -172,7 +172,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -196,6 +196,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input-output.html">Input and Output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="revision-log.html">Revision Log</a></li>
 </ul>
 
 </div>
@@ -229,14 +230,38 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
-<p>Run the main workflow with a fragment file:</p>
+<p>This page walks through the main <code class="docutils literal notranslate"><span class="pre">pyEpiAneufinder</span></code> workflow using the bundled
+example dataset and the primary public helper functions documented for the first
+release.</p>
+<section id="executing-the-program">
+<h2>Executing the Program<a class="headerlink" href="#executing-the-program" title="Link to this heading">¶</a></h2>
+<p>The main workflow is executed through <a class="reference internal" href="api.html#pyEpiAneufinder.epiAneufinder" title="pyEpiAneufinder.epiAneufinder"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyEpiAneufinder.epiAneufinder()</span></code></a>.
+When using a fragment file as input, the file should be ordered first by cell
+barcode and then by genomic position. <code class="docutils literal notranslate"><span class="pre">pyEpiAneufinder</span></code> can do this sorting
+internally when <code class="docutils literal notranslate"><span class="pre">sort_fragment=True</span></code>.</p>
+<p>Alternatively, the <code class="docutils literal notranslate"><span class="pre">fragment_file</span></code> argument can point to a Cell Ranger-style
+matrix directory containing the peaks, barcodes, and matrix files. In that
+case, set <code class="docutils literal notranslate"><span class="pre">cellRangerInput=True</span></code>. Fragment-file input is still the preferred
+path when available.</p>
+<p>By default, the workflow performs GC correction. The correction can be disabled
+with <code class="docutils literal notranslate"><span class="pre">GC=False</span></code>, but the default is recommended.</p>
+<p>The workflow also needs:</p>
+<ul class="simple">
+<li><p>a reference genome FASTA file</p></li>
+<li><p>a blacklist BED file</p></li>
+<li><p>a window size</p></li>
+<li><p>an output directory</p></li>
+<li><p>optional chromosomes to exclude</p></li>
+<li><p>a minimum fragment cutoff for filtering cells</p></li>
+</ul>
+<p>For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
 
 <span class="n">pea</span><span class="o">.</span><span class="n">epiAneufinder</span><span class="p">(</span>
@@ -256,6 +281,127 @@
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>The test dataset used in the examples is available in the repository under
+<code class="docutils literal notranslate"><span class="pre">sample_data/</span></code>.</p>
+<p>The main output is written to <code class="docutils literal notranslate"><span class="pre">results_sample_data/outs/result_table.tsv.gz</span></code>.
+This table contains the consensus CNV state per cell and genomic bin, encoded
+as <code class="docutils literal notranslate"><span class="pre">0=loss</span></code>, <code class="docutils literal notranslate"><span class="pre">0.5=weak</span> <span class="pre">loss</span></code>, <code class="docutils literal notranslate"><span class="pre">1=base</span></code>, <code class="docutils literal notranslate"><span class="pre">1.5=weak</span> <span class="pre">gain</span></code>, and <code class="docutils literal notranslate"><span class="pre">2=gain</span></code>.
+Additional intermediate outputs are described on the <a class="reference internal" href="input-output.html"><span class="doc">Input and Output</span></a> page.</p>
+<p>The example run produces the following karyogram:</p>
+<a class="reference internal image-reference" href="_images/Karyogram.png"><img alt="Karyogram generated from the example dataset" src="_images/Karyogram.png" style="width: 900px;" />
+</a>
+</section>
+<section id="splitting-cells-into-clones">
+<h2>Splitting Cells Into Clones<a class="headerlink" href="#splitting-cells-into-clones" title="Link to this heading">¶</a></h2>
+<p>An approximate subclone assignment can be derived from the hierarchical
+clustering using <a class="reference internal" href="api.html#pyEpiAneufinder.split_subclones" title="pyEpiAneufinder.split_subclones"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyEpiAneufinder.split_subclones()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;results_sample_data/outs/result_table.tsv.gz&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">clones</span> <span class="o">=</span> <span class="n">pea</span><span class="o">.</span><span class="n">split_subclones</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">split_val</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These clone labels can be shown as an annotation bar in
+<a class="reference internal" href="api.html#pyEpiAneufinder.karyo_gainloss" title="pyEpiAneufinder.karyo_gainloss"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyEpiAneufinder.karyo_gainloss()</span></code></a>. The annotation table must be indexed by
+cell barcode and must contain a column named <code class="docutils literal notranslate"><span class="pre">annot</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">annot_dt</span> <span class="o">=</span> <span class="n">clones</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">annot_dt</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">annot_dt</span><span class="o">.</span><span class="n">barcode</span>
+<span class="n">annot_dt</span><span class="p">[</span><span class="s2">&quot;annot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;clone&quot;</span> <span class="o">+</span> <span class="n">annot_dt</span><span class="o">.</span><span class="n">subclone</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+<span class="n">pea</span><span class="o">.</span><span class="n">karyo_gainloss</span><span class="p">(</span>
+    <span class="n">res</span><span class="p">,</span>
+    <span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;results_sample_data/karyo_annot.png&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Karyogram with annotation&quot;</span><span class="p">,</span>
+    <span class="n">annot_dt</span><span class="o">=</span><span class="n">annot_dt</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/karyo_annot.png"><img alt="Karyogram with clone annotations" src="_images/karyo_annot.png" style="width: 900px;" />
+</a>
+</section>
+<section id="calculating-karyogram-metrics">
+<h2>Calculating Karyogram Metrics<a class="headerlink" href="#calculating-karyogram-metrics" title="Link to this heading">¶</a></h2>
+<p>The CNV profiles can be summarized with aneuploidy and heterogeneity metrics.
+These are available for the full sample and per chromosome.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;results_sample_data/outs/result_table.tsv.gz&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pea</span><span class="o">.</span><span class="n">compute_aneuploidy_across_sample</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">pea</span><span class="o">.</span><span class="n">compute_heterogeneity_across_sample</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="n">aneu_chrom</span> <span class="o">=</span> <span class="n">pea</span><span class="o">.</span><span class="n">compute_aneuploidy_by_chr</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">heterogen_chrom</span> <span class="o">=</span> <span class="n">pea</span><span class="o">.</span><span class="n">compute_heterogeneity_by_chr</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="n">plot_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;chrom&quot;</span><span class="p">:</span> <span class="n">aneu_chrom</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="s2">&quot;aneu&quot;</span><span class="p">:</span> <span class="n">aneu_chrom</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;heterogen&quot;</span><span class="p">:</span> <span class="n">heterogen_chrom</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;aneu&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;heterogen&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">plot_data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plot_data</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="n">plot_data</span><span class="p">[</span><span class="s2">&quot;chrom&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+        <span class="p">(</span><span class="n">plot_data</span><span class="p">[</span><span class="s2">&quot;aneu&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">plot_data</span><span class="p">[</span><span class="s2">&quot;heterogen&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]),</span>
+    <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Aneuploidy per chromosome&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Heterogeneity per chromosome&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For the example data, the resulting scatter plot looks like this:</p>
+<a class="reference internal image-reference" href="_images/scatter_aneu_heterogen.png"><img alt="Scatter plot of chromosome-level aneuploidy versus heterogeneity" src="_images/scatter_aneu_heterogen.png" style="width: 700px;" />
+</a>
+</section>
+<section id="calculating-cnv-burden-per-cell">
+<h2>Calculating CNV Burden Per Cell<a class="headerlink" href="#calculating-cnv-burden-per-cell" title="Link to this heading">¶</a></h2>
+<p>CNV burden is the aneuploidy score computed at the individual-cell level. It
+can be used as an additional feature when distinguishing tumor cells.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;results_sample_data/outs/result_table.tsv.gz&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cnv_burden</span> <span class="o">=</span> <span class="n">pea</span><span class="o">.</span><span class="n">compute_cnv_burden_cell</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="coverage-profiles-per-cell">
+<h2>Coverage Profiles Per Cell<a class="headerlink" href="#coverage-profiles-per-cell" title="Link to this heading">¶</a></h2>
+<p>Individual-cell CNV calls can be explored further with
+<a class="reference internal" href="api.html#pyEpiAneufinder.plot_single_cell_profile" title="pyEpiAneufinder.plot_single_cell_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">pyEpiAneufinder.plot_single_cell_profile()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
+
+<span class="n">pea</span><span class="o">.</span><span class="n">plot_single_cell_profile</span><span class="p">(</span>
+    <span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;results_sample_data&quot;</span><span class="p">,</span>
+    <span class="n">cell_name</span><span class="o">=</span><span class="s2">&quot;AGTCCGGTCCACACCT-1&quot;</span><span class="p">,</span>
+    <span class="n">plot_path</span><span class="o">=</span><span class="s2">&quot;results_sample_data/somy_profile_cell.png&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/somy_profile_cell.png"><img alt="Per-cell coverage profile from the example dataset" src="_images/somy_profile_cell.png" style="width: 900px;" />
+</a>
+</section>
 </section>
 
         </article>
@@ -301,8 +447,31 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#executing-the-program">Executing the Program</a></li>
+<li><a class="reference internal" href="#splitting-cells-into-clones">Splitting Cells Into Clones</a></li>
+<li><a class="reference internal" href="#calculating-karyogram-metrics">Calculating Karyogram Metrics</a></li>
+<li><a class="reference internal" href="#calculating-cnv-burden-per-cell">Calculating CNV Burden Per Cell</a></li>
+<li><a class="reference internal" href="#coverage-profiles-per-cell">Coverage Profiles Per Cell</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
