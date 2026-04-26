@@ -1,6 +1,7 @@
 # pyEpiAneufinder: Identifying copy number alterations from single-cell ATAC-seq data
 
-[![CI](https://github.com/macelik/pyEpiAneufinder/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/ci.yml)
+[![Tests](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml)
+[![Docs](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml)
 [![Read the Docs](https://app.readthedocs.org/projects/pyepianeufinder/badge/?version=latest)](https://pyepianeufinder.readthedocs.io/)
 
 This package is the python version of our R package epiAneufinder. 
