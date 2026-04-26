@@ -246,6 +246,31 @@
 <h1>Calculating Karyogram Metrics<a class="headerlink" href="#calculating-karyogram-metrics" title="Link to this heading">¶</a></h1>
 <p>The CNV profiles can be summarized with aneuploidy and heterogeneity metrics.
 These are available for the full sample and per chromosome.</p>
+<p>Given a CNV result matrix with <code class="docutils literal notranslate"><span class="pre">N</span></code> cells and <code class="docutils literal notranslate"><span class="pre">T</span></code> genomic bins, and CNV
+state <span class="math notranslate nohighlight">\(c_{n,t}\)</span> for cell <span class="math notranslate nohighlight">\(n\)</span> at bin <span class="math notranslate nohighlight">\(t\)</span>, the metrics are
+defined as follows.</p>
+<p><strong>Aneuploidy</strong></p>
+<p>Aneuploidy measures the mean deviation from the baseline state
+<span class="math notranslate nohighlight">\(b\)</span> (default <span class="math notranslate nohighlight">\(b = 1\)</span>). Intuitively, it summarizes how many bins are
+gained or lost across the dataset.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[A = \frac{1}{T \cdot N} \sum_{n=1}^{N} \sum_{t=1}^{T} |c_{n,t} - b|\]</div>
+</div>
+<p><strong>Heterogeneity</strong></p>
+<p>Heterogeneity measures how different the CNV state is across cells for the same
+bin. For each bin, the frequencies of the observed CNV states are estimated as
+<span class="math notranslate nohighlight">\(m_{f,t}\)</span> and sorted in decreasing order.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[H = \frac{1}{T \cdot N} \sum_{t=1}^{T} \sum_{f=0}^{S} f \cdot m_{f,t}\]</div>
+</div>
+<p>In practice:</p>
+<ul class="simple">
+<li><p>higher aneuploidy means more deviation from the baseline copy-number state</p></li>
+<li><p>higher heterogeneity means greater variability across cells within the sample</p></li>
+<li><p>both metrics are available genome-wide and on a per-chromosome basis</p></li>
+</ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyEpiAneufinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pea</span>
@@ -342,5 +367,6 @@ These are available for the full sample and per chromosome.</p>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

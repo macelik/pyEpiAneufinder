@@ -4,6 +4,36 @@ Calculating Karyogram Metrics
 The CNV profiles can be summarized with aneuploidy and heterogeneity metrics.
 These are available for the full sample and per chromosome.
 
+Given a CNV result matrix with ``N`` cells and ``T`` genomic bins, and CNV
+state :math:`c_{n,t}` for cell :math:`n` at bin :math:`t`, the metrics are
+defined as follows.
+
+**Aneuploidy**
+
+Aneuploidy measures the mean deviation from the baseline state
+:math:`b` (default :math:`b = 1`). Intuitively, it summarizes how many bins are
+gained or lost across the dataset.
+
+.. math::
+
+   A = \frac{1}{T \cdot N} \sum_{n=1}^{N} \sum_{t=1}^{T} |c_{n,t} - b|
+
+**Heterogeneity**
+
+Heterogeneity measures how different the CNV state is across cells for the same
+bin. For each bin, the frequencies of the observed CNV states are estimated as
+:math:`m_{f,t}` and sorted in decreasing order.
+
+.. math::
+
+   H = \frac{1}{T \cdot N} \sum_{t=1}^{T} \sum_{f=0}^{S} f \cdot m_{f,t}
+
+In practice:
+
+- higher aneuploidy means more deviation from the baseline copy-number state
+- higher heterogeneity means greater variability across cells within the sample
+- both metrics are available genome-wide and on a per-chromosome basis
+
 .. code-block:: python
 
    import matplotlib.pyplot as plt
