@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml)
 [![Docs CI](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml)
-[![Read the Docs](https://app.readthedocs.org/projects/pyepianeufinder/badge/?version=latest)](https://pyepianeufinder.readthedocs.io/)
+[![Read the Docs](https://img.shields.io/badge/Read%20the%20Docs-online-brightgreen)](https://pyepianeufinder.readthedocs.io/)
 
 This package is the python version of our R package epiAneufinder. 
 
@@ -25,6 +25,10 @@ For development, including tests:
 ```bash
 pip install -e ".[test]"
 ```
+
+For the full workflow guide, figures, and the sections from `Executing the
+program` onward, see the Read the Docs site:
+https://pyepianeufinder.readthedocs.io/
 
 ### Executing the program
 
