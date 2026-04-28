@@ -1,0 +1,4 @@
+# Requires Python >= 3.10
+build>=1.4.4
+setuptools>=68
+wheel>=0.37

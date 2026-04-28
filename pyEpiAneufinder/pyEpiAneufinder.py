@@ -47,40 +47,79 @@ def epiAneufinder(fragment_file, outdir, genome_file,
                   keep_sorted_fragfile = False,
                   remove_barcodes=None,
                   selected_cells=None):
-
     """
-    Main function of epiAneufinder
+    Run the complete pyEpiAneufinder workflow on fragment or Cell Ranger input.
 
-    Runs all the necessary steps to infer copy number states; namely, creating a binned count matrix,
-    filtering, GC correction, genome segmentation, copy number annotation of segments and plotting.
+    The workflow bins the genome, builds a count matrix, applies quality-control
+    filters, optionally performs GC correction, segments each chromosome, assigns
+    copy-number states, and optionally writes a karyogram plot.
 
     Parameters
     ----------
-    fragment_file: Folder with bam files, a fragments.tsv/bed file or a folder with a count matrix (required files: matrix.mtx(.gz), barcodes.tsv(.gz) and peaks.bed(.gz))
-    outdir: Path to output directory
-    genome_file: Fasta file containing the reference genome
-    blacklist: Bed file with blacklisted regions
-    windowSize: Size of the window (Reccomended for sparse data - 1e6)
-    exclude: String of chromosomes to exclude. Example: c('chrX','chrY','chrM')
-    sort_fragment: Boolean variable. Whether to sort the fragment file by cell (can take a while). Default: True
-    GC: Boolean variable. Whether to perform GC correction. Default: True
-    title_karyo: String. Title of the output karyogram
-    minFrags: Integer. Minimum number of reads for a cell to pass. Only required for fragments.tsv file. Default: 20000
-    threshold_cells_nbins: Keep only cells that have more than a certain percentage of non-zero bins. Default: 0.35
-    threshold_blacklist_bins: Blacklist a bin if more than the given ratio of cells have zero reads in the bin. Default: 0.85
-    ncores: Number of cores for parallelization. Default: 1
-    k: Integer. Find 2^k segments per chromosome
-    plotKaryo: Boolean variable. Whether the final karyogram is plotted at the end
-    resume : Boolean variable. Whether to resume the analysis if the intermmediate/output files already exist
-    cellRangerInput: Boolean variable. Whether the input is a cell ranger output (in this case, the fragment file is not needed and the count matrix is used directly)
-    keep_sorted_fragfile: Boolean variable. Whether the resorted fragment file should be saved permanently (only releveant for sort_fragmet=TRUE)
-    remove_barcodes: Path to TSV file containing barcodes to exclude (one per line)
-    selected_cells: Additional option for filtering the input, either NULL or a file with barcodes of cells to keep (one barcode per line, no header)
+    fragment_file : str
+        Path to an input fragments file, BED-like fragment file, or a Cell Ranger
+        matrix directory. When ``cellRangerInput=True``, this should point to the
+        matrix directory that contains ``matrix.mtx(.gz)``, ``barcodes.tsv(.gz)``,
+        and ``peaks.bed(.gz)``.
+    outdir : str
+        Directory where intermediate files and final outputs are written.
+    genome_file : str
+        Reference genome FASTA file used for genomic binning and optional GC
+        correction.
+    blacklist : str
+        BED file containing genomic regions to exclude from the analysis.
+    windowSize : int
+        Genomic bin size in base pairs.
+    exclude : list[str] | None, optional
+        Chromosomes to exclude from processing, for example ``["chrX", "chrY"]``.
+    sort_fragment : bool, optional
+        If ``True``, sort the fragment input by barcode and genomic position before
+        building the count matrix.
+    GC : bool, optional
+        If ``True``, perform GC correction on the count matrix before segmentation.
+    title_karyo : str | None, optional
+        Optional title for the saved karyogram.
+    minFrags : int, optional
+        Minimum number of fragments required for a cell to pass filtering.
+    threshold_cells_nbins : float, optional
+        Minimum fraction of bins with non-zero counts required for a cell to be
+        retained.
+    threshold_blacklist_bins : float, optional
+        Remove bins where more than this fraction of cells has zero counts.
+    ncores : int, optional
+        Number of worker processes or threads to use where parallelization is
+        supported.
+    k : int, optional
+        Segmentation depth parameter. The recursive breakpoint search aims for up to
+        ``2**k`` segments per chromosome.
+    n_permutations : int, optional
+        Number of permutations used for significance testing during breakpoint
+        detection.
+    alpha : float, optional
+        Significance threshold for breakpoint detection.
+    plotKaryo : bool, optional
+        If ``True``, generate a karyogram figure from the inferred copy-number states.
+    resume : bool, optional
+        If ``True``, reuse intermediate files already present in ``outdir`` when
+        possible.
+    cellRangerInput : bool, optional
+        If ``True``, interpret ``fragment_file`` as a Cell Ranger matrix directory
+        instead of a fragment file.
+    keep_sorted_fragfile : bool, optional
+        If ``True``, keep the temporary sorted fragment file produced when
+        ``sort_fragment=True``.
+    remove_barcodes : str | None, optional
+        Path to a one-column TSV file listing barcodes to exclude.
+    selected_cells : str | None, optional
+        Path to a one-column file listing barcodes to retain. When provided, only
+        those cells are analyzed.
 
-    Output
+    Returns
     ------
-    Compressed tsv files with predictions, png file with karyogram (if plotKaryo=True) as well as intermediate results
-    
+    None
+        The workflow writes intermediate results and output files to ``outdir``,
+        including segmented copy-number tables, ``count_matrix.h5ad``, parameter
+        metadata, and optionally ``Karyogram.png``.
     """
 
     print(f"Running pyEpiAneufinder version {version('pyEpiAneufinder')} with the Watson and Holmes algorithm!")
@@ -435,19 +474,19 @@ def epiAneufinder(fragment_file, outdir, genome_file,
         somies_ad.to_csv(results_file, sep="\t", index=True, compression="gzip")
 
         print(
-            "Saved integer CNV states to integer_states.csv (0-6).\n"
+            "Saved integer CNV states to integer_states.tsv.gz (0-6).\n"
             "Holmes mapping: {0,1} --> loss (0), {2} --> base (1), {3,4,5,6} --> gain (2).\n"
-            "Mapped results are stored in result_table_holmes.csv."
+            "Mapped results are stored in result_table_holmes.tsv.gz."
         )
 
         print(
-            "Saved continuous CNV scores to continuous_scores.csv (0-6).\n"
+            "Saved continuous CNV scores to continuous_scores.tsv.gz (0-6).\n"
             "Watson mapping: <=1 --> loss (0), >1 and <3 --> base (1), >=3 --> gain (2).\n"
-            "Mapped results are stored in result_table_watson.csv."
+            "Mapped results are stored in result_table_watson.tsv.gz."
         )
 
         print(
-            "Saved consensus CNV calls to result_table.csv\n"
+            "Saved consensus CNV calls to result_table.tsv.gz\n"
             "(0=loss, 0.5=weak loss, 1=baseline, 1.5=weak gain, 2=gain),\n"
             "combining Holmes and Watson."
 )

@@ -12,20 +12,28 @@ import anndata as ad
 def split_subclones(res, split_val, criterion="maxclust",
                     dist_metric="euclidean", linkage_method="ward"):
     """
-    Function to split the CNV results into subclones based on hierarchical clustering
+    Split cells into subclones based on hierarchical clustering of CNV profiles.
 
     Parameters
     ----------
-    res: Results from pyEpiAneufinder main function (as pandas data frame)
-    split_val: Either number of clones to split the data (for criterion = maxclust) or cluster distance (for criterion = distanc)
-    criterion: Either maxclust (splitting tree into a certain number of clones defined in split_val) or
-               distance (splitting tree based on a certain distance defined in split_val)
-    dist_metric: Distance metric between CNV profile (e.g. euclidean, cityblock)
-    linkage_method: Linkage method for hierarchical clustering (e.g. Ward, complete, average)
+    res : pandas.DataFrame
+        Result table from :func:`pyEpiAneufinder.epiAneufinder` containing
+        ``seq``, ``start``, and ``end`` columns plus one CNV profile column per cell.
+    split_val : int | float
+        Threshold used to cut the clustering tree. With
+        ``criterion="maxclust"``, this is the requested number of subclones.
+        With ``criterion="distance"``, it is the clustering distance cutoff.
+    criterion : {"maxclust", "distance"}, optional
+        Criterion passed to :func:`scipy.cluster.hierarchy.fcluster`.
+    dist_metric : str, optional
+        Distance metric used when comparing cell-level CNV profiles.
+    linkage_method : str, optional
+        Linkage method used to build the hierarchical clustering tree.
 
     Returns
-    ------
-    Pandas DataFrame with two columns of barcode and subclone group
+    -------
+    pandas.DataFrame
+        Data frame with two columns: ``barcode`` and ``subclone``.
     """
 
     # Remove position information (only CNVs kept)
