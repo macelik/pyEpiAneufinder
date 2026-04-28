@@ -1,9 +1,9 @@
 # pyEpiAneufinder: Identifying copy number alterations from single-cell ATAC-seq data
 
 [![PyPI](https://img.shields.io/pypi/v/pyEpiAneufinder.svg?color=blue&label=PyPi)](https://pypi.org/project/pyEpiAneufinder/)
-[![GitHub release](https://img.shields.io/github/v/release/macelik/pyEpiAneufinder?color=blue&label=release)](https://github.com/macelik/pyEpiAneufinder/releases)
-[![Tests](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/tests.yml)
-[![Docs CI](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/macelik/pyEpiAneufinder/actions/workflows/docs.yml)
+[![GitHub release](https://img.shields.io/github/v/release/colomemaria/pyEpiAneufinder?color=blue&label=release)](https://github.com/colomemaria/pyEpiAneufinder/releases)
+[![Tests](https://github.com/colomemaria/pyEpiAneufinder/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/colomemaria/pyEpiAneufinder/actions/workflows/tests.yml)
+[![Docs CI](https://github.com/colomemaria/pyEpiAneufinder/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/colomemaria/pyEpiAneufinder/actions/workflows/docs.yml)
 [![Read the Docs](https://img.shields.io/badge/Read%20the%20Docs-online-brightgreen)](https://pyepianeufinder.readthedocs.io/)
 
 This package is the Python re-implementation of our R package
@@ -46,30 +46,23 @@ https://pyepianeufinder.readthedocs.io/
 
 ### Cite
 
-If you use `pyEpiAneufinder`, please cite both the package and the original
-`epiAneufinder` publication.
-
-Package / repository:
-
-Schmid, K., Symeonidi, A., Nikolaou, A., Bueschel, I., and Colome-Tatche, M.
-`pyEpiAneufinder`. GitHub repository:
-https://github.com/macelik/pyEpiAneufinder
-
-Original method paper:
+If you use `pyEpiAneufinder`, please cite both the `epiAneufinder` publication.
 
 Ramakrishnan, A., Symeonidi, A., Hanel, P. et al. epiAneufinder identifies copy
 number alterations from single-cell ATAC-seq data. *Nature Communications* 14,
 5846 (2023). https://doi.org/10.1038/s41467-023-41076-1
 
-### Authors of the Python Re-implementation
+### Authors
 
 Katharina Schmid (katharina.schmid@bmc.med.lmu.de)
 
+Ida Bueschel (Ida.Bueschel@helmholtz-munich.de)
+
 Aikaterini Symeonidi (asymeonidi@bmc.med.lmu.de and ksymeonidh@gmail.com)
 
-Angelos Nikolaou (anguelos.nicolaou@gmail.com)
+Muhammet A. Celik
 
-Ida Bueschel (Ida.Bueschel@helmholtz-munich.de)
+Angelos Nikolaou
 
 Maria Colome-Tatche (maria.colome@bmc.med.lmu.de)
 
